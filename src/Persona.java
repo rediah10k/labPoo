@@ -16,14 +16,14 @@ public class Persona implements Todos, Serializable {
     private Integer id;
     private String nombres;
     private String apellidos;
-    private Direccion direccion;
+    private String email;
     
     
-    public Persona(Integer id, String nombres, String apellidos, Direccion direccion){
+    public Persona(Integer id, String nombres, String apellidos, String email){
         this.id = id;
         this.nombres = nombres;
         this.apellidos = apellidos;
-        this.direccion = direccion;
+        this.email = email;
     }
     
 
@@ -39,7 +39,7 @@ public class Persona implements Todos, Serializable {
    
     @Override
     public String toString(){
-        return "Persona(id=" + this.id + ",nombres=" + this.nombres + ",apellidos=" + this.apellidos + "," + this.direccion.toString() + ")";
+        return "Persona(id=" + this.id + ",nombres=" + this.nombres + ",apellidos=" + this.apellidos + "," + this.email + ")";
     }
     
 
