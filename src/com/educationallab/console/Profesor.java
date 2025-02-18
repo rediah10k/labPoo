@@ -1,12 +1,6 @@
 
 package com.educationallab.console
 
-
-/**
- *
- * @author Estudiante_MCA Joan Martinez y Johan Arango
- */
-
 public class Profesor extends Persona {
     private  static  final  long serialVersionUID = 1L;
     private String tipoContrato;
