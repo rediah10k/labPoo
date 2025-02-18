@@ -6,6 +6,11 @@ class Facultad {
     private String nombre;
     private Persona decano;
 
+    public Facultad(String nombre, Persona decano) {
+        this.nombre = nombre;
+        this.decano = decano;
+    }
+
     public Persona getDecano() {
         return decano;
     }
