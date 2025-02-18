@@ -1,13 +1,5 @@
-
-
 package com.educationallab.console;
 
-
-
-/**
- *
- * @author Estudiante_MCA
- */
 public class Estudiante extends Persona  {
 
     private  static  final  long serialVersionUID = 1L;
