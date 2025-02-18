@@ -34,13 +34,14 @@ public class InscripcionesPersonas implements Serializable {
         }
     }
 
-    public void guardarInformacion() {
-        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(ARCHIVO))) {
-            out.writeObject(listado);
+    public void guardarInformacion(Persona p) {
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("persona_" + p.getId() + ".dat"))) {
+            out.writeObject(p); //convierte el objeto en una secuancia de bytes
         } catch (IOException e) {
-            System.out.println("Error al guardar: " + e.getMessage());
+            System.out.println("Error al guardar información de la persona: " + e.getMessage());
         }
     }
+
 
     public void cargarDatos() {
         File archivo = new File(ARCHIVO);
