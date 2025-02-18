@@ -2,15 +2,16 @@ package com.educationallab.console;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class InscripcionesPersonas implements Serializable {
     private ArrayList<Persona> listado;
     private static final long serialVersionUID = 1L;
-    private static final String ARCHIVO = "inscripciones.dat"; 
+    private static final String ARCHIVO = "inscripcionesPersonas.dat";
 
     public InscripcionesPersonas() {
         listado = new ArrayList<>();
-        cargarDatos(); // Cargar datos automáticamente al iniciar
+        cargarDatos();
     }
 
     public void inscribir(Persona p) {
