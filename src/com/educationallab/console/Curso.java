@@ -2,10 +2,17 @@ package com.educationallab.console;
 
 
 class Curso {
-    private int ID;
+    private Integer ID;
     private Programa programa;
     private String nombre;
     private boolean activo;
+
+    public Curso(Integer ID, Programa programa, String nombre, boolean activo) {
+        this.ID = ID;
+        this.programa = programa;
+        this.nombre = nombre;
+        this.activo = activo;
+    }
 
     public boolean isActivo() {
         return activo;
@@ -29,5 +36,10 @@ class Curso {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    @Override
+    public String toString(){
+       return "Nombre: "+nombre+"Programa: "+programa.toString();
     }
 }

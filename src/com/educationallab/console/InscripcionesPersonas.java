@@ -16,12 +16,12 @@ public class InscripcionesPersonas implements Serializable {
 
     public void inscribir(Persona p) {
         listado.add(p);
-        guardarInformacion(); 
+        guardarInformacion(p);
     }
 
     public void eliminar(Persona p) {
         if (listado.remove(p)) {
-            guardarInformacion();
+            guardarInformacion(p);
         }
     }
 
@@ -29,7 +29,7 @@ public class InscripcionesPersonas implements Serializable {
         for (int i = 0; i < listado.size(); i++) {
             if (listado.get(i).getId().equals(p.getId())) {
                 listado.set(i, p);
-                guardarInformacion();
+                guardarInformacion(p);
                 return;
             }
         }

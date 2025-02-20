@@ -10,6 +10,14 @@ class Programa {
     private Date registro;
     private Facultad facultad;
 
+    public Programa(double ID, String nombre, double duracion, Date registro, Facultad facultad) {
+        this.ID = ID;
+        this.nombre = nombre;
+        this.duracion = duracion;
+        this.registro = registro;
+        this.facultad = facultad;
+    }
+
     public String getNombre() {
         return nombre;
     }
@@ -40,5 +48,10 @@ class Programa {
 
     public void setFacultad(Facultad facultad) {
         this.facultad = facultad;
+    }
+
+    @Override
+    public String toString() {
+        return "Nombre: "+nombre+" Facultad: "+facultad.getNombre();
     }
 }

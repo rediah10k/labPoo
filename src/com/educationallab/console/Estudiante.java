@@ -2,12 +2,11 @@ package com.educationallab.console;
 
 public class Estudiante extends Persona  {
 
-    private  static  final  long serialVersionUID = 1L;
     private String codigo;
-    private String programa;
+    private Programa programa;
     private Boolean activo;
     private Double promedio;
-    public Estudiante(Integer id, String nombres, String apellidos, String email, String codigo, String programa, Boolean activo, Double promedio){
+    public Estudiante(Double id, String nombres, String apellidos, String email, String codigo, Programa programa, Boolean activo, Double promedio){
         super(id, nombres, apellidos, email);
         this.codigo = codigo;
         this.programa = programa;
@@ -24,10 +23,10 @@ public class Estudiante extends Persona  {
     }
 
     public String getPrograma() {
-        return programa;
+        return programa.toString();
     }
 
-    public void setPrograma(String programa) {
+    public void setPrograma(Programa programa) {
         this.programa = programa;
     }
 
@@ -49,7 +48,7 @@ public class Estudiante extends Persona  {
 
     @Override
     public String toString() {
-       return "Estudiante{" + super.toString() + "codigo=" + codigo + ", programa=" + programa + ", activo="+activo+", promedio="+promedio+ '}';
+       return "Estudiante{" + super.toString() + "codigo=" + codigo + ", programa=" + programa.toString() + ", activo="+activo+", promedio="+promedio+ '}';
     }
 
 }

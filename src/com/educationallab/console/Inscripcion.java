@@ -2,14 +2,16 @@ package com.educationallab.console;
 
 
 class Inscripcion {
+    private Double ID;
     private Curso curso;
-    private int año;
-    private int semestre;
+    private Integer anio;
+    private Integer semestre;
     private Estudiante estudiante;
 
-    public Inscripcion(Curso curso, int año, Estudiante estudiante, int semestre) {
+    public Inscripcion(Double ID,Curso curso, Integer anio, Estudiante estudiante, Integer semestre) {
+        this.ID = ID;
         this.curso = curso;
-        this.año = año;
+        this.anio = anio;
         this.estudiante = estudiante;
         this.semestre = semestre;
     }
@@ -23,11 +25,11 @@ class Inscripcion {
     }
 
     public int getAño() {
-        return año;
+        return anio;
     }
 
-    public void setAño(int año) {
-        this.año = año;
+    public void setAño(Integer anio) {
+        this.anio = anio;
     }
 
     public int getSemestre() {
@@ -44,5 +46,17 @@ class Inscripcion {
 
     public void setEstudiante(Estudiante estudiante) {
         this.estudiante = estudiante;
+    }
+    @Override
+    public String toString(){
+         return ("Curso: " + curso.toString() + "Estudiante: " + estudiante.toString() + "Semestre: " + semestre);
+    }
+
+    public Double getID() {
+        return ID;
+    }
+
+    public void setID(Double ID) {
+        this.ID = ID;
     }
 }
