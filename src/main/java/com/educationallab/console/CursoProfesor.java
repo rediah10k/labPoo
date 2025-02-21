@@ -16,9 +16,17 @@ public class CursoProfesor implements Serializable {
         this.semestre = semestre;
         this.curso=curso;
     }
+
+    public Profesor getProfesor(){
+        return profesor;
+    }
+
+    public Curso getCurso(){
+        return curso;
+    }
     
     @Override
     public String toString(){
-        return "CursoProfesor(profesor=" + this.profesor.toString() + ",año=" + this.anio + "," + this.curso.toString() + ")";
+        return "CursoProfesor(profesor=" + this.profesor.toString() + ",año=" + this.anio +"," + this.semestre + "," + this.curso.toString() + ")";
     }
 }

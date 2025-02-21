@@ -2,11 +2,11 @@ package com.educationallab.console;
 
 public class Estudiante extends Persona  {
 
-    private String codigo;
+    private Double codigo;
     private Programa programa;
     private Boolean activo;
     private Double promedio;
-    public Estudiante(Double id, String nombres, String apellidos, String email, String codigo, Programa programa, Boolean activo, Double promedio){
+    public Estudiante(Double id, String nombres, String apellidos, String email, double codigo, Programa programa, Boolean activo, Double promedio){
         super(id, nombres, apellidos, email);
         this.codigo = codigo;
         this.programa = programa;
@@ -14,11 +14,11 @@ public class Estudiante extends Persona  {
         this.promedio = promedio;
     }
 
-    public String getCodigo() {
+    public Double getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(String codigo) {
+    public void setCodigo(Double codigo) {
         this.codigo = codigo;
     }
 

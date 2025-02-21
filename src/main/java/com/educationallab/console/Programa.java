@@ -3,19 +3,23 @@ import java.util.Date;
 
 
 
-class Programa {
-    private double ID;
+public class Programa {
+    private double id;
     private String nombre;
     private double duracion;
     private Date registro;
     private Facultad facultad;
 
-    public Programa(double ID, String nombre, double duracion, Date registro, Facultad facultad) {
-        this.ID = ID;
+    public Programa(double id, String nombre, double duracion, Date registro, Facultad facultad) {
+        this.id = id;
         this.nombre = nombre;
         this.duracion = duracion;
         this.registro = registro;
         this.facultad = facultad;
+    }
+
+    public double getId(){
+        return id;
     }
 
     public String getNombre() {

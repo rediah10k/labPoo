@@ -2,12 +2,12 @@ package com.educationallab.console;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.List;
 
 public class InscripcionesPersonas implements Serializable {
-    private ArrayList<Persona> listado;
     private static final long serialVersionUID = 1L;
     private static final String ARCHIVO = "inscripcionesPersonas.dat";
+
+    private final ArrayList<Persona> listado;
 
     public InscripcionesPersonas() {
         listado = new ArrayList<>();
@@ -16,12 +16,12 @@ public class InscripcionesPersonas implements Serializable {
 
     public void inscribir(Persona p) {
         listado.add(p);
-        guardarInformacion(p);
+        guardarInformacion();
     }
 
     public void eliminar(Persona p) {
         if (listado.remove(p)) {
-            guardarInformacion(p);
+            guardarInformacion();
         }
     }
 
@@ -29,29 +29,38 @@ public class InscripcionesPersonas implements Serializable {
         for (int i = 0; i < listado.size(); i++) {
             if (listado.get(i).getId().equals(p.getId())) {
                 listado.set(i, p);
-                guardarInformacion(p);
+                guardarInformacion();
                 return;
             }
         }
     }
 
-    public void guardarInformacion(Persona p) {
-        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("persona_" + p.getId() + ".dat"))) {
-            out.writeObject(p); //convierte el objeto en una secuancia de bytes
+    public void guardarInformacion() {
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(ARCHIVO))) {
+            out.writeObject(listado);
         } catch (IOException e) {
-            System.out.println("Error al guardar información de la persona: " + e.getMessage());
+            System.out.println("Error al guardar información: " + e.getMessage());
         }
     }
 
-
+    @SuppressWarnings("unchecked")
     public void cargarDatos() {
         File archivo = new File(ARCHIVO);
         if (archivo.exists()) {
             try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(ARCHIVO))) {
-                listado = (ArrayList<Persona>) in.readObject();
+                listado.clear();  // Asegurar que no haya duplicados
+                listado.addAll((ArrayList<Persona>) in.readObject());
             } catch (IOException | ClassNotFoundException e) {
                 System.out.println("Error al cargar datos: " + e.getMessage());
             }
+        }
+    }
+
+    // Nuevo método agregado
+    public void imprimirListado() {
+        System.out.println("Lista de personas inscritas:");
+        for (Persona p : listado) {
+            System.out.println(p);
         }
     }
 }

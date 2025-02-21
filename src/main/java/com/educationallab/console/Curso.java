@@ -2,18 +2,21 @@ package com.educationallab.console;
 
 
 class Curso {
-    private Integer ID;
+    private Integer id;
     private Programa programa;
     private String nombre;
     private boolean activo;
 
-    public Curso(Integer ID, Programa programa, String nombre, boolean activo) {
-        this.ID = ID;
+    public Curso(Integer id, Programa programa, String nombre, boolean activo) {
+        this.id = id;
         this.programa = programa;
         this.nombre = nombre;
         this.activo = activo;
     }
 
+    public Integer getId() {
+        return id;
+    }
     public boolean isActivo() {
         return activo;
     }

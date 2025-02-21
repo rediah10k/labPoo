@@ -2,20 +2,23 @@ package com.educationallab.console;
 
 
 class Inscripcion {
-    private Double ID;
+    private Double id;
     private Curso curso;
     private Integer anio;
     private Integer semestre;
     private Estudiante estudiante;
 
-    public Inscripcion(Double ID,Curso curso, Integer anio, Estudiante estudiante, Integer semestre) {
-        this.ID = ID;
+    public Inscripcion(Double id,Curso curso, Integer anio, Estudiante estudiante, Integer semestre) {
+        this.id = id;
         this.curso = curso;
         this.anio = anio;
         this.estudiante = estudiante;
         this.semestre = semestre;
     }
 
+    public Double getId(){
+        return id;
+    }
     public Curso getCurso() {
         return curso;
     }
@@ -52,11 +55,9 @@ class Inscripcion {
          return ("Curso: " + curso.toString() + "Estudiante: " + estudiante.toString() + "Semestre: " + semestre);
     }
 
-    public Double getID() {
-        return ID;
-    }
+    
 
-    public void setID(Double ID) {
-        this.ID = ID;
+    public void setID(Double id) {
+        this.id = id;
     }
 }

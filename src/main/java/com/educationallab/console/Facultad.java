@@ -2,15 +2,19 @@ package com.educationallab.console;
 
 
 class Facultad {
-    private double ID;
+    private double id;
     private String nombre;
     private Persona decano;
 
-    public Facultad(String nombre, Persona decano) {
+    public Facultad(double id, String nombre, Persona decano) {
+        this.id= id;
         this.nombre = nombre;
         this.decano = decano;
     }
 
+    public double getId() {
+        return id;
+    }
     public Persona getDecano() {
         return decano;
     }
