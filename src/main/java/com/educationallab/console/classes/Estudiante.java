@@ -1,6 +1,6 @@
-package com.educationallab.console;
+package com.educationallab.console.classes;
 
-public class Estudiante extends Persona  {
+public class Estudiante extends Persona {
 
     private Double codigo;
     private Programa programa;

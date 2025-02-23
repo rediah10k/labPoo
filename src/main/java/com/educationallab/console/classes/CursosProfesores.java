@@ -1,4 +1,4 @@
-package com.educationallab.console;
+package com.educationallab.console.classes;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -19,21 +19,34 @@ public class CursosProfesores implements Serializable, Servicios {
         guardarInformacion();
     }
 
+
     public void eliminar(CursoProfesor c) {
-        listado.remove(c);
+        int personaPos=traerPersonaPosicion(c);
+        listado.remove(personaPos);
         guardarInformacion();
     }
 
     public void actualizar(CursoProfesor c) {
+        int personaPos=traerPersonaPosicion(c);
+        listado.set(personaPos, c);
+        guardarInformacion();
+    }
+
+    public int traerPersonaPosicion(CursoProfesor c) {
         for (int i = 0; i < listado.size(); i++) {
-            if (listado.get(i).getProfesor().equals(c.getProfesor()) &&
-                listado.get(i).getCurso().equals(c.getCurso())) {
-                listado.set(i, c);
-                guardarInformacion();
-                return;
+            if (listado.get(i).getCurso().getId().equals(c.getCurso().getId())&&
+                    listado.get(i).getProfesor().getId().equals(c.getProfesor().getId())) {
+                return i;
             }
         }
+        return -1;
     }
+
+
+
+
+
+
 
     public void guardarInformacion() {
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(FILE_NAME))) {
@@ -78,8 +91,10 @@ public class CursosProfesores implements Serializable, Servicios {
     @Override
     public List<String> imprimirListado() {
         List<String> resultado = new ArrayList<>();
+        int i=1;
         for (CursoProfesor cursoProfesor : listado) {
-            resultado.add(cursoProfesor.toString());
+            resultado.add(i+") "+cursoProfesor.toString());
+            i++;
         }
         return resultado;
     }

@@ -1,9 +1,9 @@
-package com.educationallab.console;
+package com.educationallab.console.classes;
 
 
 import java.io.Serializable;
 
-class Curso implements Serializable {
+public class Curso implements Serializable {
     private static final long serialVersionUID = 1L;
     private Integer id;
     private Programa programa;

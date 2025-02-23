@@ -1,4 +1,4 @@
-package com.educationallab.console;
+package com.educationallab.console.classes;
 
 import java.io.Serializable;
 

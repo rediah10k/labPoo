@@ -1,6 +1,8 @@
-package com.educationallab.console;
+package com.educationallab.console.classes;
 
 
+
+import com.educationallab.console.classes.Inscripcion;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -20,21 +22,32 @@ public class CursosInscritos implements Serializable, Servicios {
         guardarInformacion();
     }
 
-    public void eliminar(Inscripcion inscripcion) {
-        listado.remove(inscripcion);
+
+
+    public void eliminar(Inscripcion p) {
+        int personaPos=traerPersonaPosicion(p);
+        listado.remove(personaPos);
         guardarInformacion();
     }
 
     public void actualizar(Inscripcion p) {
+        int personaPos=traerPersonaPosicion(p);
+        listado.set(personaPos, p);
+        guardarInformacion();
+    }
+
+    public int traerPersonaPosicion(Inscripcion p) {
         for (int i = 0; i < listado.size(); i++) {
-            if (listado.get(i).getCurso().equals(p.getCurso()) &&
-                listado.get(i).getEstudiante().equals(p.getEstudiante())) {
-                listado.set(i, p);
-                guardarInformacion();
-                return;
+            if (listado.get(i).getId().equals(p.getId())) {
+                return i;
             }
         }
+        return -1;
     }
+
+
+
+
 
     public void guardarInformacion() {
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(ARCHIVO))) {
@@ -79,8 +92,10 @@ public class CursosInscritos implements Serializable, Servicios {
     @Override
     public List<String> imprimirListado() {
         List<String> resultado = new ArrayList<>();
+        int i = 1;
         for (Inscripcion inscripcion : listado) {
-            resultado.add(inscripcion.toString());
+            resultado.add(i+") "+inscripcion.toString());
+            i++;
         }
         return resultado;
     }

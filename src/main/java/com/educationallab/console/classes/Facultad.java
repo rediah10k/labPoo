@@ -1,9 +1,9 @@
-package com.educationallab.console;
+package com.educationallab.console.classes;
 
 
 import java.io.Serializable;
 
-class Facultad implements Serializable {
+public class Facultad implements Serializable {
     private static final long serialVersionUID = 1L;
     private double id;
     private String nombre;

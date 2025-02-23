@@ -1,4 +1,4 @@
-package com.educationallab.console;
+package com.educationallab.console.classes;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -21,19 +21,24 @@ public class InscripcionesPersonas implements Serializable {
     }
 
     public void eliminar(Persona p) {
-        if (listado.remove(p)) {
-            guardarInformacion();
-        }
+        int personaPos=traerPersonaPosicion(p);
+        listado.remove(personaPos);
+        guardarInformacion();
     }
 
     public void actualizar(Persona p) {
+        int personaPos=traerPersonaPosicion(p);
+        listado.set(personaPos, p);
+        guardarInformacion();
+    }
+
+    public int traerPersonaPosicion(Persona p) {
         for (int i = 0; i < listado.size(); i++) {
             if (listado.get(i).getId().equals(p.getId())) {
-                listado.set(i, p);
-                guardarInformacion();
-                return;
+                return i;
             }
         }
+        return -1;
     }
 
     public void guardarInformacion() {
@@ -60,8 +65,10 @@ public class InscripcionesPersonas implements Serializable {
 
     public List<String> imprimirListado() {
         java.util.List<String> resultado = new ArrayList<>();
+        int i=1;
         for (Persona p : listado) {
-            resultado.add(p.toString());
+            resultado.add(i+") "+p.toString());
+            i++;
         }
         return resultado;
 

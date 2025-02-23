@@ -1,4 +1,4 @@
-package com.educationallab.console;
+package com.educationallab.console.classes;
 
 public class Profesor extends Persona {
     private static final long serialVersionUID = 1L;
