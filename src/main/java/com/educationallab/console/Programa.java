@@ -1,9 +1,11 @@
 package com.educationallab.console;
+import java.io.Serializable;
 import java.util.Date;
 
 
 
-public class Programa {
+public class Programa implements Serializable {
+    private static final long serialVersionUID = 1L;
     private double id;
     private String nombre;
     private double duracion;
@@ -56,6 +58,6 @@ public class Programa {
 
     @Override
     public String toString() {
-        return "Nombre: "+nombre+" Facultad: "+facultad.getNombre();
+        return nombre+" Facultad: "+facultad.getNombre();
     }
 }

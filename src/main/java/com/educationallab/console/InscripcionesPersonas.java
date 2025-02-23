@@ -2,6 +2,7 @@ package com.educationallab.console;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class InscripcionesPersonas implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -56,11 +57,17 @@ public class InscripcionesPersonas implements Serializable {
         }
     }
 
-    // Nuevo método agregado
-    public void imprimirListado() {
-        System.out.println("Lista de personas inscritas:");
+
+    public List<String> imprimirListado() {
+        java.util.List<String> resultado = new ArrayList<>();
         for (Persona p : listado) {
-            System.out.println(p);
+            resultado.add(p.toString());
         }
+        return resultado;
+
+    }
+
+    public String toString() {
+        return String.join("\n", imprimirListado());
     }
 }

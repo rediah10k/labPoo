@@ -51,7 +51,7 @@ public class Persona implements Serializable {
 
     @Override
     public String toString(){
-        return "Persona(id=" + this.id + ",nombres=" + this.nombres + ",apellidos=" + this.apellidos + "," + this.email + ")";
+        return this.nombres + " " + this.apellidos + ", " + this.email+" ";
     }
 
 

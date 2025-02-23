@@ -1,7 +1,10 @@
 package com.educationallab.console;
 
 
-class Curso {
+import java.io.Serializable;
+
+class Curso implements Serializable {
+    private static final long serialVersionUID = 1L;
     private Integer id;
     private Programa programa;
     private String nombre;
@@ -43,6 +46,6 @@ class Curso {
 
     @Override
     public String toString(){
-       return "Nombre: "+nombre+"Programa: "+programa.toString();
+       return nombre+" Programa: "+programa.toString();
     }
 }

@@ -1,7 +1,10 @@
 package com.educationallab.console;
 
 
-class Inscripcion {
+import java.io.Serializable;
+
+class Inscripcion implements Serializable {
+    private  static  final  long serialVersionUID = 1L;
     private Double id;
     private Curso curso;
     private Integer anio;
@@ -18,6 +21,9 @@ class Inscripcion {
 
     public Double getId(){
         return id;
+    }
+    public void setID(Double id) {
+        this.id = id;
     }
     public Curso getCurso() {
         return curso;
@@ -52,12 +58,10 @@ class Inscripcion {
     }
     @Override
     public String toString(){
-         return ("Curso: " + curso.toString() + "Estudiante: " + estudiante.toString() + "Semestre: " + semestre);
+         return ("Inscripcion:("+  "Curso: " + curso.toString() +" Año: "+anio+" Semestre: " + semestre+ ") || Estudiante: " + estudiante.toString() );
     }
 
     
 
-    public void setID(Double id) {
-        this.id = id;
-    }
+
 }

@@ -27,6 +27,6 @@ public class CursoProfesor implements Serializable {
     
     @Override
     public String toString(){
-        return "CursoProfesor(profesor=" + this.profesor.toString() + ",año=" + this.anio +"," + this.semestre + "," + this.curso.toString() + ")";
+        return "Docente:"+this.profesor.toString() + " || Curso ("+this.curso.toString() +", "+ this.anio +" ," + this.semestre + ")";
     }
 }
