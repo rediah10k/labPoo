@@ -58,7 +58,7 @@ class Inscripcion implements Serializable {
     }
     @Override
     public String toString(){
-         return ("Inscripcion:("+  "Curso: " + curso.toString() +" Año: "+anio+" Semestre: " + semestre+ ") || Estudiante: " + estudiante.toString() );
+         return ("Inscripcion:("+  "Curso: " + curso.toString() +" Año: "+anio+" Semestre: " + semestre+ ") || " + estudiante.toString() );
     }
 
     

@@ -11,6 +11,6 @@ public class Profesor extends Persona {
 
     @Override
     public String toString() {
-        return "(" +super.toString() + ", Tipo de contrato: " + tipoContrato+")";
+        return "Docente: (" +super.toString() + ", Tipo de contrato: " + tipoContrato+")";
     }
 }
