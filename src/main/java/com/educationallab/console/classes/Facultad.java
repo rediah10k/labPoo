@@ -1,10 +1,11 @@
 package com.educationallab.console.classes;
 
-
+import lombok.*;
 import java.io.Serializable;
+@Getter
+@Setter
 
-public class Facultad implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class Facultad implements Serializable{
     private double id;
     private String nombre;
     private Persona decano;
@@ -15,24 +16,6 @@ public class Facultad implements Serializable {
         this.decano = decano;
     }
 
-    public double getId() {
-        return id;
-    }
-    public Persona getDecano() {
-        return decano;
-    }
-
-    public void setDecano(Persona decano) {
-        this.decano = decano;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
 
     @Override
     public String toString(){

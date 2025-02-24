@@ -2,7 +2,6 @@ package com.educationallab.console;
 
 import com.educationallab.console.classes.*;
 
-import java.util.Date;
 
 public class Main {
 
@@ -20,8 +19,8 @@ public class Main {
         Facultad facultad = new Facultad(1.0, "FCBI", decano);
 
 
-        Programa sistemas = new Programa(1.0, "Ingeniería en Sistem", 10.0, new Date(), facultad);
-        Programa electro = new Programa(1.0, "Ingeniería Electronica", 10.0, new Date(), facultad);
+        Programa sistemas = new Programa(1.0, "Ingeniería en Sistem", 10.0, "011675", facultad);
+        Programa electro = new Programa(1.0, "Ingeniería Electronica", 10.0, "011660", facultad);
 
 
         Curso estocelectro = new Curso(101, electro, "Procesos Estocasticos", true);
@@ -80,8 +79,8 @@ public class Main {
         Facultad facultad = new Facultad(1.0, "FCBI", decano);
 
 
-        Programa sistemas = new Programa(1.0, "Ingeniería de Sistemas", 10.0, new Date(), facultad);
-        Programa electro = new Programa(2.0, "Ingeniería Electronica", 10.0, new Date(), facultad);
+        Programa sistemas = new Programa(1.0, "Ingeniería de Sistemas", 10.0, "011680", facultad);
+        Programa electro = new Programa(2.0, "Ingeniería Electronica", 10.0, "011690", facultad);
         Estudiante est1 = new Estudiante(160004505.0, "Alexander", "Carrillo", "alex@correo.com", 160004505, sistemas, true, 2.5);
         Estudiante est2 = new Estudiante(160004624.0, "Maria", "Arenas", "ana@correo.com", 160004624, sistemas, true, 3.5);
         Curso estocelectro = new Curso(101, electro, "Procesos Estocasticos", true);

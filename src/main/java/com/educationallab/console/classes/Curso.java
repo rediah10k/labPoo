@@ -1,10 +1,10 @@
 package com.educationallab.console.classes;
-
-
 import java.io.Serializable;
+import lombok.*;
 
+@Getter
+@Setter
 public class Curso implements Serializable {
-    private static final long serialVersionUID = 1L;
     private Integer id;
     private Programa programa;
     private String nombre;
@@ -17,32 +17,6 @@ public class Curso implements Serializable {
         this.activo = activo;
     }
 
-    public Integer getId() {
-        return id;
-    }
-    public boolean isActivo() {
-        return activo;
-    }
-
-    public void setActivo(boolean activo) {
-        this.activo = activo;
-    }
-
-    public Programa getPrograma() {
-        return programa;
-    }
-
-    public void setPrograma(Programa programa) {
-        this.programa = programa;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
 
     @Override
     public String toString(){

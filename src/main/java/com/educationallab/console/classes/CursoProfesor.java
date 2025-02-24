@@ -1,7 +1,10 @@
 package com.educationallab.console.classes;
 
 import java.io.Serializable;
+import lombok.*;
 
+@Getter
+@Setter
 public class CursoProfesor implements Serializable {
 
     private  static  final  long serialVersionUID = 1L;
@@ -17,13 +20,6 @@ public class CursoProfesor implements Serializable {
         this.curso=curso;
     }
 
-    public Profesor getProfesor(){
-        return profesor;
-    }
-
-    public Curso getCurso(){
-        return curso;
-    }
     
     @Override
     public String toString(){

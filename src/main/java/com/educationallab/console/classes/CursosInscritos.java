@@ -1,78 +1,57 @@
 package com.educationallab.console.classes;
 
-
-
-import com.educationallab.console.classes.Inscripcion;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CursosInscritos implements Serializable, Servicios {
-    private List<Inscripcion> listado;
+public class CursosInscritos implements Servicios {
+    private ArrayList<Inscripcion> listado = new ArrayList<>();
     private static final String ARCHIVO = "inscripcionesCursos.dat";
-
-    public CursosInscritos() {
-        listado = new ArrayList<>();
-        cargarDatos(); // Cargar datos previos al iniciar
-    }
 
     public void inscribirCurso(Inscripcion inscripcion) {
         listado.add(inscripcion);
         guardarInformacion();
     }
 
-
-
-    public void eliminar(Inscripcion p) {
-        int personaPos=traerPersonaPosicion(p);
-        listado.remove(personaPos);
+    public void eliminar(Inscripcion inscripcion) {
+        listado.remove(inscripcion);
         guardarInformacion();
     }
 
-    public void actualizar(Inscripcion p) {
-        int personaPos=traerPersonaPosicion(p);
-        listado.set(personaPos, p);
-        guardarInformacion();
-    }
-
-    public int traerPersonaPosicion(Inscripcion p) {
+    public void actualizar(Inscripcion inscripcion) {
         for (int i = 0; i < listado.size(); i++) {
-            if (listado.get(i).getId().equals(p.getId())) {
-                return i;
+            if (listado.get(i).getCurso().getId().equals(inscripcion.getCurso().getId())) {
+                listado.set(i, inscripcion);
+                guardarInformacion();
+                return;
             }
         }
-        return -1;
+        System.out.println("⚠ No se encontró la inscripción con ID: " + inscripcion.getCurso().getId());
     }
-
-
-
-
 
     public void guardarInformacion() {
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(ARCHIVO))) {
             out.writeObject(listado);
+            System.out.println("✅ Archivo guardado con éxito. Inscripciones: " + listado.size());
         } catch (IOException e) {
-            System.out.println("Error al guardar: " + e.getMessage());
+            System.out.println("❌ Error al guardar inscripciones: " + e.getMessage());
         }
     }
 
     @SuppressWarnings("unchecked")
     public void cargarDatos() {
         File archivo = new File(ARCHIVO);
-        if (archivo.exists()) {
-            try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(ARCHIVO))) {
-                Object obj = in.readObject();
-                if (obj instanceof List<?>) {
-                    listado = (List<Inscripcion>) obj;
-                } else {
-                    System.out.println("Error: el archivo no contiene una lista válida.");
-                }
-            } catch (IOException | ClassNotFoundException e) {
-                System.out.println("Error al cargar datos: " + e.getMessage());
-            }
-        } else {
-            listado = new ArrayList<>();
+
+        if (!archivo.exists()) {
+            System.out.println("⚠ Archivo de inscripciones no encontrado. Se creará uno nuevo.");
+            return;
+        }
+
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(archivo))) {
+            listado = (ArrayList<Inscripcion>) in.readObject();
+            System.out.println("✅ Inscripciones cargadas. Total: " + listado.size());
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("❌ Error al cargar inscripciones: " + e.getMessage());
         }
     }
 
@@ -81,7 +60,7 @@ public class CursosInscritos implements Serializable, Servicios {
         if (posicion >= 0 && posicion < listado.size()) {
             return listado.get(posicion).toString();
         }
-        return "Posición fuera de rango";
+        return "⚠ Posición inválida.";
     }
 
     @Override
@@ -91,17 +70,17 @@ public class CursosInscritos implements Serializable, Servicios {
 
     @Override
     public List<String> imprimirListado() {
-        List<String> resultado = new ArrayList<>();
-        int i = 1;
+        List<String> lista = new ArrayList<>();
         for (Inscripcion inscripcion : listado) {
-            resultado.add(i+") "+inscripcion.toString());
-            i++;
+            lista.add(inscripcion.toString());
         }
-        return resultado;
+        return lista;
     }
 
     @Override
     public String toString() {
-        return String.join("\n", imprimirListado());
+        return listado.toString();
     }
 }
+
+

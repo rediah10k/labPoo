@@ -1,10 +1,11 @@
 package com.educationallab.console.classes;
 
-
+import lombok.*;
 import java.io.Serializable;
+@Getter
+@Setter
 
-public class Inscripcion implements Serializable {
-    private  static  final  long serialVersionUID = 1L;
+public class Inscripcion implements Serializable{
     private Double id;
     private Curso curso;
     private Integer anio;
@@ -19,49 +20,9 @@ public class Inscripcion implements Serializable {
         this.semestre = semestre;
     }
 
-    public Double getId(){
-        return id;
-    }
-    public void setID(Double id) {
-        this.id = id;
-    }
-    public Curso getCurso() {
-        return curso;
-    }
-
-    public void setCurso(Curso curso) {
-        this.curso = curso;
-    }
-
-    public int getAño() {
-        return anio;
-    }
-
-    public void setAño(Integer anio) {
-        this.anio = anio;
-    }
-
-    public int getSemestre() {
-        return semestre;
-    }
-
-    public void setSemestre(int semestre) {
-        this.semestre = semestre;
-    }
-
-    public Estudiante getEstudiante() {
-        return estudiante;
-    }
-
-    public void setEstudiante(Estudiante estudiante) {
-        this.estudiante = estudiante;
-    }
     @Override
     public String toString(){
          return ("Inscripcion:("+  "Curso: " + curso.toString() +" Año: "+anio+" Semestre: " + semestre+ ") || " + estudiante.toString() );
     }
-
-    
-
 
 }

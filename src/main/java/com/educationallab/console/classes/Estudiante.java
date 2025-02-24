@@ -1,6 +1,11 @@
 package com.educationallab.console.classes;
 
-public class Estudiante extends Persona {
+import lombok.*;
+
+@Getter
+@Setter
+
+public class Estudiante extends Persona  {
 
     private Double codigo;
     private Programa programa;
@@ -14,37 +19,7 @@ public class Estudiante extends Persona {
         this.promedio = promedio;
     }
 
-    public Double getCodigo() {
-        return codigo;
-    }
-
-    public void setCodigo(Double codigo) {
-        this.codigo = codigo;
-    }
-
-    public String getPrograma() {
-        return programa.toString();
-    }
-
-    public void setPrograma(Programa programa) {
-        this.programa = programa;
-    }
-
-    public Boolean getActivo() {
-        return activo;
-    }
-
-    public void setActivo(Boolean activo) {
-        this.activo = activo;
-    }
-
-    public Double getPromedio() {
-        return promedio;
-    }
-
-    public void setPromedio(Double promedio) {
-        this.promedio = promedio;
-    }
+    
 
     @Override
     public String toString() {

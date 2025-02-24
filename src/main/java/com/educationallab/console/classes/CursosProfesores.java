@@ -4,74 +4,38 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CursosProfesores implements Serializable, Servicios {
-    private ArrayList<CursoProfesor> listado;
-    private static final long serialVersionUID = 1L;
-    private static final String FILE_NAME = "cursos_profesores.dat";
+public class CursosProfesores implements Servicios {
+    private ArrayList<CursoProfesor> listado = new ArrayList<>();
+    private static final String ARCHIVO = "cursosProfesores.dat";
 
-    public CursosProfesores() {
-        listado = new ArrayList<>();
-        cargarDatos();
-    }
-
-    public void inscribir(CursoProfesor c) {
-        listado.add(c);
+    public void inscribir(CursoProfesor cursoProfesor) {
+        listado.add(cursoProfesor);
         guardarInformacion();
     }
-
-
-    public void eliminar(CursoProfesor c) {
-        int personaPos=traerPersonaPosicion(c);
-        listado.remove(personaPos);
-        guardarInformacion();
-    }
-
-    public void actualizar(CursoProfesor c) {
-        int personaPos=traerPersonaPosicion(c);
-        listado.set(personaPos, c);
-        guardarInformacion();
-    }
-
-    public int traerPersonaPosicion(CursoProfesor c) {
-        for (int i = 0; i < listado.size(); i++) {
-            if (listado.get(i).getCurso().getId().equals(c.getCurso().getId())&&
-                    listado.get(i).getProfesor().getId().equals(c.getProfesor().getId())) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-
-
-
-
-
 
     public void guardarInformacion() {
-        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(FILE_NAME))) {
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(ARCHIVO))) {
             out.writeObject(listado);
+            System.out.println("✅ Archivo guardado con éxito. Cursos-profesores: " + listado.size());
         } catch (IOException e) {
-            System.out.println("Error al guardar información: " + e.getMessage());
+            System.out.println("❌ Error al guardar cursos-profesores: " + e.getMessage());
         }
     }
 
     @SuppressWarnings("unchecked")
     public void cargarDatos() {
-        File archivo = new File(FILE_NAME);
-        if (archivo.exists()) {
-            try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(FILE_NAME))) {
-                Object obj = in.readObject();
-                if (obj instanceof ArrayList<?>) {
-                    listado = (ArrayList<CursoProfesor>) obj;
-                } else {
-                    System.out.println("Error: el archivo no contiene una lista válida.");
-                }
-            } catch (IOException | ClassNotFoundException e) {
-                System.out.println("Error al cargar datos: " + e.getMessage());
-            }
-        } else {
-            listado = new ArrayList<>();
+        File archivo = new File(ARCHIVO);
+
+        if (!archivo.exists()) {
+            System.out.println("⚠ Archivo de cursos-profesores no encontrado. Se creará uno nuevo.");
+            return;
+        }
+
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(archivo))) {
+            listado = (ArrayList<CursoProfesor>) in.readObject();
+            System.out.println("✅ Cursos-profesores cargados. Total: " + listado.size());
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("❌ Error al cargar cursos-profesores: " + e.getMessage());
         }
     }
 
@@ -80,7 +44,7 @@ public class CursosProfesores implements Serializable, Servicios {
         if (posicion >= 0 && posicion < listado.size()) {
             return listado.get(posicion).toString();
         }
-        return "Posición fuera de rango";
+        return "⚠ Posición inválida.";
     }
 
     @Override
@@ -90,17 +54,16 @@ public class CursosProfesores implements Serializable, Servicios {
 
     @Override
     public List<String> imprimirListado() {
-        List<String> resultado = new ArrayList<>();
-        int i=1;
-        for (CursoProfesor cursoProfesor : listado) {
-            resultado.add(i+") "+cursoProfesor.toString());
-            i++;
+        List<String> lista = new ArrayList<>();
+        for (CursoProfesor cp : listado) {
+            lista.add(cp.toString());
         }
-        return resultado;
+        return lista;
     }
 
     @Override
     public String toString() {
-        return String.join("\n", imprimirListado());
+        return listado.toString();
     }
 }
+
