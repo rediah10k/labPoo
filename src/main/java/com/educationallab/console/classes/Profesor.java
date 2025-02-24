@@ -1,5 +1,8 @@
-package com.educationallab.console;
+package com.educationallab.console.classes;
+import lombok.*;
 
+@Getter
+@Setter
 public class Profesor extends Persona {
     private static final long serialVersionUID = 1L;
     private String tipoContrato;
@@ -11,6 +14,6 @@ public class Profesor extends Persona {
 
     @Override
     public String toString() {
-        return "Profesor(" + super.toString() + ", tipoContrato=" + tipoContrato + ")";
+        return "Docente: (" +super.toString() + ", Tipo de contrato: " + tipoContrato+")";
     }
 }
