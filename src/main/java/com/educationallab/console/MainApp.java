@@ -27,7 +27,7 @@ public class MainApp {
         cursoDAO.insertarDatosSemilla();
 
         SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Gestión de Usuarios");
+            JFrame frame = new JFrame("Gestión Institucional");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setSize(800, 600);
 
