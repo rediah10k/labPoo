@@ -1,4 +1,8 @@
+<<<<<<<< HEAD:src/main/java/com/educationallab/console/model/CursoProfesor.java
 package com.educationallab.console.model;
+========
+package com.educationallab.console.classes;
+>>>>>>>> acba17daaf2aeb5effc7ce59913f0804d0635bdc:src/main/java/com/educationallab/console/classes/CursoProfesor.java
 
 import java.io.Serializable;
 import lombok.*;
