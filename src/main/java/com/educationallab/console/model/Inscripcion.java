@@ -6,13 +6,14 @@ import java.io.Serializable;
 @Setter
 
 public class Inscripcion implements Serializable{
+    private Double Id;
     private Curso curso;
     private Integer anio;
     private Integer semestre;
     private Estudiante estudiante;
 
-    public Inscripcion(Curso curso, Integer anio, Estudiante estudiante, Integer semestre) {
-
+    public Inscripcion(Double Id, Curso curso, Integer anio, Estudiante estudiante, Integer semestre) {
+        this.Id=Id;
         this.curso = curso;
         this.anio = anio;
         this.estudiante = estudiante;

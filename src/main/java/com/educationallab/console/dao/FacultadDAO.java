@@ -8,16 +8,23 @@ import java.util.List;
 
 public class FacultadDAO {
 
+    private Connection conexion;
+
+
+    public FacultadDAO() {
+        this.conexion = ConexionBD.getInstancia().getConexion();
+    }
+
+
+
     public void insertarDatosSemilla() {
         String sql = "INSERT INTO Facultad (ID, Nombre, DecanoID) VALUES " +
-                "(1, 'Facultad de Ingeniería', 1), " +
-                "(2, 'Facultad de Ciencias', 1), " +
-                "(3, 'Facultad de Humanidades', 1)";
+                "(1.0, 'Facultad de Ingeniería', 1.0), " +
+                "(2.0, 'Facultad de Ciencias', 1.0), " +
+                "(3.0, 'Facultad de Humanidades', 1.0)";
 
-        try (Connection con = ConexionBD.conectar();
-             Statement stmt = con.createStatement()) {
-
-            stmt.executeUpdate(sql);
+        try (var stmt = conexion.prepareStatement(sql)) {
+            stmt.executeUpdate();
             System.out.println("Datos semilla insertados en Facultad.");
 
         } catch (SQLException e) {
@@ -25,16 +32,16 @@ public class FacultadDAO {
         }
     }
 
-    public Facultad obtenerFacultad(Double facultadId, Connection con) {
+    public Facultad obtenerFacultad(Double facultadId) {
         Facultad facultad = null;
         String sql = "SELECT * FROM Facultad WHERE ID = ?";
-        PersonaDAO personaDAO = new PersonaDAO();
-        try (PreparedStatement stmt = con.prepareStatement(sql)) {
+        ProfesorDAO profesorDAO = new ProfesorDAO();
+        try (var stmt = conexion.prepareStatement(sql)) {
             stmt.setDouble(1, facultadId);
 
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    Profesor profesor = (Profesor) personaDAO.buscarPersonaPorId(rs.getDouble("DecanoId"));
+                    Profesor profesor = profesorDAO.buscarPorId(rs.getDouble("DecanoId"));
                     facultad = new Facultad(
                             rs.getDouble("ID"),
                             rs.getString("Nombre"),
@@ -52,15 +59,14 @@ public class FacultadDAO {
         List<Facultad> facultades = new ArrayList<>();
         String sql = "SELECT * FROM Facultad";
 
-        try (Connection con = ConexionBD.conectar();
-             Statement stmt = con.createStatement();
+        try (var stmt = conexion.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
                 Facultad facultad = new Facultad(
                         rs.getDouble("ID"),
                         rs.getString("Nombre"),
-                        null // Persona responsable (podría recuperarse si se requiere)
+                        null
                 );
                 facultades.add(facultad);
             }

@@ -1,48 +1,49 @@
 package com.educationallab.console;
 
-import com.educationallab.console.dao.*;
-import com.educationallab.console.model.Estudiante;
-import com.educationallab.console.model.Persona;
-import com.educationallab.console.model.Programa;
-import com.educationallab.console.util.ConexionBD;
-import com.educationallab.console.view.CursosDocPanel;
+import com.educationallab.console.controller.CursosEstudianteController;
+import com.educationallab.console.controller.CursosProfesorController;
+import com.educationallab.console.controller.EstudiantesController;
+import com.educationallab.console.controller.ProfesoresController;
+import com.educationallab.console.view.CursosProfesorPanel;
 import com.educationallab.console.view.CursosEstudiantePanel;
-import com.educationallab.console.view.UserPanel;
+import com.educationallab.console.view.PersonasPanel;
 
 import javax.swing.*;
-import java.sql.Connection;
-import java.util.List;
 
 public class MainApp {
     public static void main(String[] args) {
-        PersonaDAO personaDAO = new PersonaDAO();
-        personaDAO.insertarDatosSemilla();
-
-        FacultadDAO facultadDAO = new FacultadDAO();
-        facultadDAO.insertarDatosSemilla();
-        ProgramaDAO programaDAO = new ProgramaDAO();
-        programaDAO.insertarDatosSemilla();
-        CursoDAO cursoDAO = new CursoDAO();
-        cursoDAO.insertarDatosSemilla();
-
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("Gestión Institucional");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setSize(800, 600);
 
             JTabbedPane tabbedPane = new JTabbedPane();
-            InscripcionesPersonasDAO personasDAO = new InscripcionesPersonasDAO();
-            InscripcionDAO inscripcionDAO = new InscripcionDAO();
 
-            //CursosProfesoresDAO cursosProfesoresDAO=new CursosProfesoresDAO();
-            tabbedPane.addTab("Manejar usuarios", new UserPanel(personaDAO));
-            //tabbedPane.addTab("Cursos por docente", new CursosDocPanel(inscripcionDAO));
-            tabbedPane.addTab("Inscripciones estudiantiles", new CursosEstudiantePanel(inscripcionDAO));
+            PersonasPanel vistaPersonas=new PersonasPanel();
+            CursosProfesorPanel vistaProfesores=new CursosProfesorPanel();
+            CursosEstudiantePanel vistaInscripciones=new CursosEstudiantePanel();
+
+
+
+            CursosEstudianteController cursosEstudianteController = new CursosEstudianteController();
+            CursosProfesorController cursosProfesorController=new CursosProfesorController();
+            ProfesoresController profesoresController=new ProfesoresController();
+            EstudiantesController estudiantesController=new EstudiantesController();
+
+
+            vistaInscripciones.setController(cursosEstudianteController);
+            vistaProfesores.setController(cursosProfesorController);
+            vistaPersonas.setEstudiantesController(estudiantesController);
+            vistaPersonas.setProfesoresController(profesoresController);
+
+            tabbedPane.addTab("Manejar usuarios", vistaPersonas);
+            tabbedPane.addTab("Cursos por docente", vistaProfesores);
+            tabbedPane.addTab("Inscripciones por estudiante", vistaInscripciones);
+
 
             frame.add(tabbedPane);
             frame.setVisible(true);
         });
 
     }
-
 }

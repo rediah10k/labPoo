@@ -4,7 +4,6 @@ package com.educationallab.console.model;
 
 import java.io.Serializable;
 
-import com.educationallab.console.model.Profesor;
 import lombok.*;
 
 @Getter
@@ -12,12 +11,14 @@ import lombok.*;
 public class CursoProfesor implements Serializable {
 
     private  static  final  long serialVersionUID = 1L;
+    private Double Id;
     private Profesor profesor;
     private Integer anio;
     private Integer semestre;
     private Curso curso;
  
-    public CursoProfesor( Profesor profesor, Integer anio, Integer semestre, Curso curso){
+    public CursoProfesor(Double Id, Curso curso, Integer anio, Profesor profesor,  Integer semestre){
+        this.Id=Id;
         this.profesor = profesor;
         this.anio= anio;
         this.semestre = semestre;

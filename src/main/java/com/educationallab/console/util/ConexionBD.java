@@ -5,20 +5,60 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class ConexionBD {
-    private static final String URL = "jdbc:h2:tcp://localhost/~/personasDB"; // Base de datos en archivo
-    private static final String USER = "admin";
-    private static final String PASSWORD = "tecno";
+    private  final String URL = "jdbc:h2:tcp://localhost/~/personasDB;DB_CLOSE_DELAY=-1";
+    private  final String USER = "admin";
+    private  final String PASSWORD = "tecno";
+    private Connection conexion;
+    private static ConexionBD instancia;
 
     static {
         inicializarBD();
     }
 
-    public static Connection conectar() throws SQLException {
-        return DriverManager.getConnection(URL, USER, PASSWORD);
+    private ConexionBD(){
+        try {
+            this.conexion = DriverManager.getConnection(URL, USER, PASSWORD);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error al conectar a la base de datos");
+        }
+
     }
 
+    public static ConexionBD getInstancia() {
+        if (instancia == null) {
+            synchronized (ConexionBD.class) {
+                if (instancia == null) {
+                    instancia = new ConexionBD();
+                }
+            }
+        }
+        return instancia;
+    }
+
+    public Connection getConexion() {
+        try {
+            if (conexion == null || conexion.isClosed()) {
+                conexion = DriverManager.getConnection(URL, USER, PASSWORD);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al obtener la conexión a la base de datos", e);
+        }
+        return conexion;
+    }
+
+    public void cerrarConexion() {
+        try {
+            if (conexion != null) {
+                conexion.close();
+                instancia = null;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     private static void inicializarBD() {
-        try (Connection con = conectar();
+        try (Connection con = getInstancia().getConexion();
              Statement stmt = con.createStatement()) {
             String sql = """
                 DROP TABLE IF EXISTS CursoProfesor;
@@ -73,22 +113,22 @@ public class ConexionBD {
                 
                 -- 5️⃣ Crear CursoProfesor (requiere Curso y Persona)
                 CREATE TABLE CursoProfesor (
+                    ID DOUBLE PRIMARY KEY AUTO_INCREMENT,
                     ProfesorID DOUBLE NOT NULL,
                     CursoID INTEGER NOT NULL,
                     Año INTEGER NOT NULL,
                     Semestre INTEGER NOT NULL,
-                    PRIMARY KEY (ProfesorID, CursoID, Año, Semestre),
                     FOREIGN KEY (ProfesorID) REFERENCES Persona(ID) ON DELETE CASCADE,
                     FOREIGN KEY (CursoID) REFERENCES Curso(ID) ON DELETE CASCADE
                 );
                 
                 -- 6️⃣ Crear Inscripción (requiere Curso y Persona)
                 CREATE TABLE Inscripcion (
+                    ID DOUBLE PRIMARY KEY AUTO_INCREMENT,
                     CursoID INTEGER NOT NULL,
                     Año INTEGER NOT NULL,
                     Semestre INTEGER NOT NULL,
                     EstudianteID DOUBLE NOT NULL,
-                    PRIMARY KEY (CursoID, Año, Semestre, EstudianteID),
                     FOREIGN KEY (CursoID) REFERENCES Curso(ID) ON DELETE CASCADE,
                     FOREIGN KEY (EstudianteID) REFERENCES Persona(ID) ON DELETE CASCADE
                 );

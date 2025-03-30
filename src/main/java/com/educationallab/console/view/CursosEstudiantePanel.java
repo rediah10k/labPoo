@@ -1,29 +1,26 @@
 package com.educationallab.console.view;
-
-import com.educationallab.console.dao.*;
 import com.educationallab.console.model.*;
 import com.educationallab.console.view.tablemodels.CursosInscritosTableModel;
-import com.educationallab.console.view.tablemodels.CursosProfesoresTableModel;
+
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
+import com.educationallab.console.controller.CursosEstudianteController;
 
 
 public class CursosEstudiantePanel extends JPanel {
     private JTable table;
     private CursosInscritosTableModel tableModel;
-    private InscripcionDAO inscripcionDAO;
-    List<Inscripcion> inscripciones;
+    private CursosEstudianteController controller;
 
-    public CursosEstudiantePanel(InscripcionDAO inscripcionDAO) {
-        this.inscripcionDAO = inscripcionDAO;
+
+    public CursosEstudiantePanel() {
         this.setLayout(new BorderLayout());
 
-        inscripciones=inscripcionDAO.listarInscripciones();
-        tableModel = new CursosInscritosTableModel(inscripciones);
+        tableModel = new CursosInscritosTableModel(List.of());
         table = new JTable(tableModel);
         table.setDefaultEditor(Object.class, null);
 
@@ -33,168 +30,107 @@ public class CursosEstudiantePanel extends JPanel {
                 if (e.getClickCount() == 2 && SwingUtilities.isLeftMouseButton(e)) {
                     int row = table.getSelectedRow();
                     if (row != -1) {
-                        Inscripcion inscripcion = inscripciones.get(row);
-                        showInsInfoDialog(inscripcion, row);
+                        Inscripcion inscripcion = tableModel.getInscripciones().get(row);
+                        mostrarInfoInscripcion(inscripcion);
                     }
                 }
             }
         });
+
+
 
         JScrollPane scrollPane = new JScrollPane(table);
         this.add(scrollPane, BorderLayout.CENTER);
 
         JPanel panelBotones = new JPanel();
         JButton btnInscribir = new JButton("Inscribir");
-        btnInscribir.addActionListener(e -> showAddInsDialog());
+        btnInscribir.addActionListener(e -> mostrarDialogoAgregar());
 
         JButton btnEliminar = new JButton("Eliminar");
-        btnEliminar.addActionListener(e -> deleteSelectedUser());
+        btnEliminar.addActionListener(e -> eliminarInscripcionSeleccionada());
 
         JButton btnEditar = new JButton("Editar");
-        btnEditar.addActionListener(e -> showEditInsDialog());
+        btnEditar.addActionListener(e -> mostrarDialogoEditar());
 
         panelBotones.add(btnInscribir);
         panelBotones.add(btnEliminar);
         panelBotones.add(btnEditar);
         this.add(panelBotones, BorderLayout.NORTH);
+
     }
 
 
-    private void showInsInfoDialog(Inscripcion inscripcion, int row) {
-        JDialog dialog = new JDialog();
-        dialog.setTitle("Información del curso y su docente");
-        dialog.setSize(300, 250);
-        dialog.setLayout(new GridLayout(0, 1));
-
-        dialog.add(new JLabel("Curso: " + inscripcion.getCurso().getNombre()));
-        dialog.add(new JLabel("Nombre del estudiante: " + inscripcion.getEstudiante().getNombres()+" "+inscripcion.getEstudiante().getApellidos()));
-
-        dialog.add(new JLabel("Semestre: " + inscripcion.getSemestre()));
-        dialog.add(new JLabel("Año: " + inscripcion.getAnio()));
-
-        dialog.setModal(true);
-        dialog.setVisible(true);
+    public void setController(CursosEstudianteController controller) {
+        this.controller = controller;
     }
 
-    private void showAddInsDialog() {
-        JDialog dialog = new JDialog();
-        dialog.setTitle("Agregar Inscripción");
-        dialog.setSize(400, 300);
-        dialog.setLayout(new GridLayout(0, 2));
-        PersonaDAO personaDAO = new PersonaDAO();
-        CursoDAO cursoDAO = new CursoDAO();
-        // Obtener datos de Cursos y Estudiantes
-        List<Estudiante> estudiantes = personaDAO.listarEstudiantes();
-        List<Curso> cursos = cursoDAO.listarCursos();
-
-        JComboBox<Persona> comboEstudiantes = new JComboBox<>(estudiantes.toArray(new Persona[0]));
-        JComboBox<Curso> comboCursos = new JComboBox<>(cursos.toArray(new Curso[0]));
-        JTextField txtSemestre = new JTextField();
-        JTextField txtAnio = new JTextField();
-
-        dialog.add(new JLabel("Estudiante:"));
-        dialog.add(comboEstudiantes);
-        dialog.add(new JLabel("Curso:"));
-        dialog.add(comboCursos);
-        dialog.add(new JLabel("Semestre:"));
-        dialog.add(txtSemestre);
-        dialog.add(new JLabel("Año:"));
-        dialog.add(txtAnio);
-
-        JButton btnGuardar = new JButton("Guardar");
-        btnGuardar.addActionListener(e -> {
-            Estudiante estudiante = (Estudiante) comboEstudiantes.getSelectedItem();
-            Curso curso = (Curso) comboCursos.getSelectedItem();
-            int semestre = Integer.parseInt(txtSemestre.getText());
-            int anio = Integer.parseInt(txtAnio.getText());
-
-            Inscripcion nuevaInscripcion = new Inscripcion(curso,anio,estudiante,semestre);
-            inscripcionDAO.insertar(nuevaInscripcion);
-            refreshTable();
-            dialog.dispose();
-        });
-
-        dialog.add(btnGuardar);
-        dialog.setModal(true);
-        dialog.setVisible(true);
-    }
-
-
-    private void showEditInsDialog() {
-        int row = table.getSelectedRow();
-        if (row != -1) {
-            Inscripcion inscripcion = inscripciones.get(row);
-
-        JDialog dialog = new JDialog();
-        dialog.setTitle("Editar Inscripción");
-        dialog.setSize(400, 300);
-        dialog.setLayout(new GridLayout(0, 2));
-        PersonaDAO personaDAO = new PersonaDAO();
-        CursoDAO cursoDAO = new CursoDAO();
-        // Obtener listas de estudiantes y cursos
-        List<Estudiante> estudiantes = personaDAO.listarEstudiantes();
-        List<Curso> cursos = cursoDAO.listarCursos();
-
-        JComboBox<Persona> comboEstudiantes = new JComboBox<>(estudiantes.toArray(new Persona[0]));
-        JComboBox<Curso> comboCursos = new JComboBox<>(cursos.toArray(new Curso[0]));
-        JTextField txtSemestre = new JTextField(String.valueOf(inscripcion.getSemestre()));
-        JTextField txtAnio = new JTextField(String.valueOf(inscripcion.getAnio()));
-
-        comboEstudiantes.setSelectedItem(inscripcion.getEstudiante());
-        comboCursos.setSelectedItem(inscripcion.getCurso());
-
-        dialog.add(new JLabel("Estudiante:"));
-        dialog.add(comboEstudiantes);
-        dialog.add(new JLabel("Curso:"));
-        dialog.add(comboCursos);
-        dialog.add(new JLabel("Semestre:"));
-        dialog.add(txtSemestre);
-        dialog.add(new JLabel("Año:"));
-        dialog.add(txtAnio);
-
-        JButton btnGuardar = new JButton("Actualizar");
-        btnGuardar.addActionListener(e -> {
-            Estudiante estudiante = (Estudiante) comboEstudiantes.getSelectedItem();
-            Curso curso = (Curso) comboCursos.getSelectedItem();
-            int semestre = Integer.parseInt(txtSemestre.getText());
-            int anio = Integer.parseInt(txtAnio.getText());
-
-            Inscripcion inscripcionEditada = new Inscripcion(curso,anio,estudiante,semestre );
-            inscripcionDAO.actualizar(inscripcionEditada);
-            refreshTable();
-            dialog.dispose();
-        });
-
-        dialog.add(btnGuardar);
-        dialog.setModal(true);
-        dialog.setVisible(true);
-        }else {
-            JOptionPane.showMessageDialog(this, "Seleccione una inscripcion para editar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-        }
-    }
-
-    private void deleteSelectedUser() {
-        int row = table.getSelectedRow();
-        if (row != -1) {
-            Inscripcion ins = inscripciones.get(row);
-        int confirm = JOptionPane.showConfirmDialog(null, "¿Desea eliminar esta inscripción?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
-        if (confirm == JOptionPane.YES_OPTION) {
-            inscripcionDAO.eliminar(ins);
-            refreshTable();
-        }
-        }else {
-            JOptionPane.showMessageDialog(this, "Seleccione una inscripcion para eliminar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-        }
-    }
-
-
-    private void refreshTable() {
-        inscripciones = inscripcionDAO.listarInscripciones();
+    public void actualizarTabla() {
+        List<Inscripcion> inscripciones=controller.cargarInscripciones();
         tableModel.setInscripciones(inscripciones);
         tableModel.fireTableDataChanged();
     }
 
+    private void mostrarInfoInscripcion(Inscripcion inscripcion) {
+        JOptionPane.showMessageDialog(this,
+                "Curso: " + inscripcion.getCurso().getNombre() + "\n" +
+                        "Estudiante: " + inscripcion.getEstudiante().getNombres() + " " + inscripcion.getEstudiante().getApellidos() + "\n" +
+                        "Semestre: " + inscripcion.getSemestre() + "\n" +
+                        "Año: " + inscripcion.getAnio(),
+                "Información de Inscripción", JOptionPane.INFORMATION_MESSAGE);
+    }
 
+    private void mostrarDialogoAgregar() {
+        List<Persona> estudiantes = controller.obtenerEstudiantes();
+        List<Curso> cursos = controller.obtenerCursos();
 
+        JComboBox<Estudiante> comboEstudiantes = new JComboBox<>(estudiantes.toArray(new Estudiante[0]));
+        JComboBox<Curso> comboCursos = new JComboBox<>(cursos.toArray(new Curso[0]));
+        JTextField txtSemestre = new JTextField();
+        JTextField txtAnio = new JTextField();
 
+        Object[] inputs = {"Estudiante:", comboEstudiantes, "Curso:", comboCursos, "Semestre:", txtSemestre, "Año:", txtAnio};
+        int result = JOptionPane.showConfirmDialog(this, inputs, "Agregar Inscripción", JOptionPane.OK_CANCEL_OPTION);
+
+        if (result == JOptionPane.OK_OPTION) {
+            controller.agregarInscripcion((Estudiante) comboEstudiantes.getSelectedItem(), (Curso) comboCursos.getSelectedItem(),
+                    Integer.parseInt(txtSemestre.getText()), Integer.parseInt(txtAnio.getText()));
+            actualizarTabla();
+        }
+    }
+
+    private void mostrarDialogoEditar() {
+        int row = table.getSelectedRow();
+        if (row != -1) {
+            Inscripcion inscripcion = tableModel.getInscripciones().get(row);
+            List<Persona> estudiantes = controller.obtenerEstudiantes();
+            List<Curso> cursos = controller.obtenerCursos();
+
+            JComboBox<Estudiante> comboEstudiantes = new JComboBox<>(estudiantes.toArray(new Estudiante[0]));
+            JComboBox<Curso> comboCursos = new JComboBox<>(cursos.toArray(new Curso[0]));
+            JTextField txtSemestre = new JTextField(String.valueOf(inscripcion.getSemestre()));
+            JTextField txtAnio = new JTextField(String.valueOf(inscripcion.getAnio()));
+
+            comboEstudiantes.setSelectedItem(inscripcion.getEstudiante());
+            comboCursos.setSelectedItem(inscripcion.getCurso());
+
+            Object[] inputs = {"Estudiante:", comboEstudiantes, "Curso:", comboCursos, "Semestre:", txtSemestre, "Año:", txtAnio};
+            int result = JOptionPane.showConfirmDialog(this, inputs, "Editar Inscripción", JOptionPane.OK_CANCEL_OPTION);
+
+            if (result == JOptionPane.OK_OPTION) {
+                controller.editarInscripcion(inscripcion.getId(), (Estudiante) comboEstudiantes.getSelectedItem(),
+                        (Curso) comboCursos.getSelectedItem(), Integer.parseInt(txtSemestre.getText()), Integer.parseInt(txtAnio.getText()));
+                actualizarTabla();
+            }
+        }
+    }
+
+    private void eliminarInscripcionSeleccionada() {
+        int row = table.getSelectedRow();
+        if (row != -1) {
+            Inscripcion inscripcion = tableModel.getInscripciones().get(row);
+            controller.eliminarInscripcion(inscripcion);
+            actualizarTabla();
+        }
+    }
 }
+

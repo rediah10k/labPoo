@@ -18,7 +18,7 @@ public class CursosInscritosDAO {
 
     public CursosInscritosDAO() {
 
-    listado.add(new Inscripcion(soft1,2025,jose,1));
+    listado.add(new Inscripcion(1.0,soft1,2025,jose,1));
     }
 
 }

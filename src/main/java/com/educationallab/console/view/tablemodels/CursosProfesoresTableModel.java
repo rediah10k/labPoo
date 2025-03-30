@@ -1,10 +1,15 @@
 package com.educationallab.console.view.tablemodels;
 
 import com.educationallab.console.model.CursoProfesor;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.List;
 
+
+@Setter
+@Getter
 public class CursosProfesoresTableModel extends AbstractTableModel {
     private String[] columnNames = {"Nombres", "Apellidos", "Curso", "Semestre","Año"};
     private List<CursoProfesor> cursosProfesores;
@@ -39,5 +44,10 @@ public class CursosProfesoresTableModel extends AbstractTableModel {
             case 4: return cursoProfesor.getAnio();
             default: return null;
         }
+    }
+
+    public void setCursosProfesores(List<CursoProfesor> cursosProfesores) {
+        this.cursosProfesores = cursosProfesores;
+        fireTableDataChanged();
     }
 }

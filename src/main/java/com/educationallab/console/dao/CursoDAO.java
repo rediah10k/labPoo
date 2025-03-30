@@ -15,6 +15,12 @@ import com.educationallab.console.util.ConexionBD;
 import java.sql.*;
 
 public class CursoDAO {
+    private Connection conexion;
+
+
+    public CursoDAO() {
+        this.conexion = ConexionBD.getInstancia().getConexion();
+    }
 
     public void insertarDatosSemilla() {
         String sql = "INSERT INTO Curso (ID, Nombre, ProgramaID, Activo) VALUES " +
@@ -22,15 +28,30 @@ public class CursoDAO {
                 "(2, 'Estructuras de Datos', 1, true), " +
                 "(3, 'Historia Contemporánea', 3, true)";
 
-        try (Connection con = ConexionBD.conectar();
-             Statement stmt = con.createStatement()) {
+        try (var stmt = conexion.prepareStatement(sql)) {
 
-            stmt.executeUpdate(sql);
+            stmt.executeUpdate();
             System.out.println("Datos semilla insertados en Curso.");
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean insertar(Curso curso) {
+        String sql="INSERT INTO Curso (Nombre,ProgramaID,Activo) VALUES(?,?,?,?)";
+        try (var stmt = conexion.prepareStatement(sql)) {
+
+            stmt.setString(1, curso.getNombre());
+            stmt.setDouble(2, curso.getPrograma().getId());
+            stmt.setBoolean(3, curso.isActivo());
+
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+
     }
 
 
@@ -39,9 +60,8 @@ public class CursoDAO {
         String sql = "SELECT * FROM Curso";
         ProgramaDAO programaDAO = new ProgramaDAO();
 
-        try (Connection con = ConexionBD.conectar();
-             Statement stmt = con.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+        try (var stmt = conexion.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
                 Programa programa = programaDAO.obtenerProgramaPorId(rs.getDouble("ProgramaID"));
@@ -70,8 +90,7 @@ public class CursoDAO {
         Curso curso = null;
         ProgramaDAO programaDAO = new ProgramaDAO();
 
-        try (Connection con = ConexionBD.conectar();
-             PreparedStatement stmt = con.prepareStatement(sql)) {
+        try (var stmt = conexion.prepareStatement(sql)) {
 
             stmt.setInt(1, cursoId);
             try (ResultSet rs = stmt.executeQuery()) {

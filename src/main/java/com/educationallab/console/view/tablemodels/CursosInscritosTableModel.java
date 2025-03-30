@@ -1,6 +1,5 @@
 package com.educationallab.console.view.tablemodels;
 
-import com.educationallab.console.model.CursoProfesor;
 import com.educationallab.console.model.Inscripcion;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,7 +13,7 @@ import java.util.List;
 
 public class CursosInscritosTableModel extends AbstractTableModel {
     private String[] columnNames = {"Nombres", "Apellidos", "Curso", "Semestre","Año"};
-    private List<Inscripcion> inscripciones;
+    protected List<Inscripcion> inscripciones;
 
     public CursosInscritosTableModel(List<Inscripcion> inscripciones) {
         this.inscripciones = inscripciones;

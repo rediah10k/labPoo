@@ -10,7 +10,7 @@ import javax.swing.table.AbstractTableModel;
 import java.util.List;
 
 public class UserTableModel extends AbstractTableModel {
-    private String[] columnNames = { "Rol", "Nombres", "Apellidos", "Programa", "Tipo de Contrato"};
+    private String[] columnNames = { "Nombres", "Apellidos", "Email"};
     @Getter
     @Setter
     private List<Persona> personas;
@@ -39,24 +39,10 @@ public class UserTableModel extends AbstractTableModel {
         Persona user = personas.get(rowIndex);
         switch (columnIndex) {
 
-            case 0: if (user instanceof Estudiante) {
-                return "Estudiante";
-            }
-            if (user instanceof Profesor) {
-                    return "Docente";
-            }
-            case 1: return user.getNombres();
-            case 2: return user.getApellidos();
-            case 3: if (user instanceof Estudiante) {
-                return ((Estudiante) user).getPrograma().getNombre();
-            }else{
-                return "No aplica";
-            }
-            case 4: if (user instanceof Profesor) {
-                return ((Profesor) user).getTipoContrato();
-            }else{
-                return "No aplica";
-            }
+            case 0: return user.getNombres();
+            case 1: return user.getApellidos();
+            case 2: return user.getEmail();
+
             default: return null;
         }
     }

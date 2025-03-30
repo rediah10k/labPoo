@@ -7,6 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProgramaDAO {
+    private Connection conexion;
+
+    public ProgramaDAO() {
+        this.conexion=ConexionBD.getInstancia().getConexion();
+    }
+
 
     public void insertarDatosSemilla() {
         String sql = "INSERT INTO Programa (ID, Nombre, Duracion, Registro, FacultadID) VALUES " +
@@ -14,10 +20,9 @@ public class ProgramaDAO {
                 "(2, 'Matemáticas', 4, '2022-05-15', 2), " +
                 "(3, 'Historia', 4, '2021-08-10', 3)";
 
-        try (Connection con = ConexionBD.conectar();
-             Statement stmt = con.createStatement()) {
+        try (var stmt = conexion.prepareStatement(sql);) {
 
-            stmt.executeUpdate(sql);
+            stmt.executeUpdate();
             System.out.println("Datos semilla insertados en Programa.");
 
         } catch (SQLException e) {
@@ -30,12 +35,11 @@ public class ProgramaDAO {
         String sql = "SELECT * FROM Programa";
         FacultadDAO facultadDAO = new FacultadDAO();
 
-        try (Connection con = ConexionBD.conectar();
-             Statement stmt = con.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+        try (var stmt = conexion.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
-                Facultad facultad = facultadDAO.obtenerFacultad(rs.getDouble("FacultadID"), con);
+                Facultad facultad = facultadDAO.obtenerFacultad(rs.getDouble("FacultadID"));
                 Programa programa = new Programa(
                         rs.getInt("ID"),
                         rs.getString("Nombre"),
@@ -57,13 +61,12 @@ public class ProgramaDAO {
         FacultadDAO facultadDAO = new FacultadDAO();
 
 
-        try (Connection con = ConexionBD.conectar();
-             PreparedStatement stmt = con.prepareStatement(sql)) {
+        try (var stmt = conexion.prepareStatement(sql);) {
 
             stmt.setDouble(1, programaId);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    Facultad facultad = facultadDAO.obtenerFacultad(rs.getDouble("FacultadID"), con);
+                    Facultad facultad = facultadDAO.obtenerFacultad(rs.getDouble("FacultadID"));
                     programa = new Programa(
                             rs.getDouble("ID"),
                             rs.getString("Nombre"),
