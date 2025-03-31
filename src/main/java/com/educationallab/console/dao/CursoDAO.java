@@ -22,24 +22,41 @@ public class CursoDAO {
         this.conexion = ConexionBD.getInstancia().getConexion();
     }
 
-    public void insertarDatosSemilla() {
-        String sql = "INSERT INTO Curso (ID, Nombre, ProgramaID, Activo) VALUES " +
-                "(1, 'Matemáticas Básicas', 2, true), " +
-                "(2, 'Estructuras de Datos', 1, true), " +
-                "(3, 'Historia Contemporánea', 3, true)";
 
-        try (var stmt = conexion.prepareStatement(sql)) {
 
-            stmt.executeUpdate();
-            System.out.println("Datos semilla insertados en Curso.");
 
+    public boolean actualizar(Curso curso) {
+        String sql = "UPDATE Curso SET Nombre = ?, ProgramaID = ?, Activo = ? WHERE ID = ?";
+
+        try (PreparedStatement stmt = conexion.prepareStatement(sql)) {
+            stmt.setString(1, curso.getNombre());
+            stmt.setDouble(2, curso.getPrograma().getId());
+            stmt.setBoolean(3, curso.isActivo());
+            stmt.setInt(4, curso.getId());
+
+            return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
+
+    public boolean eliminar(int id) {
+        String sql = "DELETE FROM Curso WHERE ID = ?";
+
+        try (PreparedStatement stmt = conexion.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
     public boolean insertar(Curso curso) {
-        String sql="INSERT INTO Curso (Nombre,ProgramaID,Activo) VALUES(?,?,?,?)";
+        String sql="INSERT INTO Curso (Nombre,ProgramaID,Activo) VALUES(?,?,?)";
         try (var stmt = conexion.prepareStatement(sql)) {
 
             stmt.setString(1, curso.getNombre());
@@ -53,7 +70,6 @@ public class CursoDAO {
         return false;
 
     }
-
 
     public List<Curso> listarCursos() {
         List<Curso> cursos = new ArrayList<>();
@@ -110,5 +126,10 @@ public class CursoDAO {
         return curso;
     }
 
+
+
 }
+
+
+
 

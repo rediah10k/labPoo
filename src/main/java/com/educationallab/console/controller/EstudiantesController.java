@@ -2,26 +2,27 @@ package com.educationallab.console.controller;
 import com.educationallab.console.dao.*;
 import com.educationallab.console.model.*;
 
-import com.educationallab.console.model.factories.PersonaFactory;
-
 
 import java.util.List;
 
 public class EstudiantesController {
     private final EstudianteDAO estudianteDAO;
     private final ProgramaDAO programaDAO;
-    private final FacultadDAO facultadDAO;
-    private final CursoDAO cursoDAO;
+
 
     public EstudiantesController() {
         this.estudianteDAO = new EstudianteDAO();
         this.programaDAO = new ProgramaDAO();
-        this.facultadDAO = new FacultadDAO();
-        this.cursoDAO = new CursoDAO();
-        facultadDAO.insertarDatosSemilla();
-        programaDAO.insertarDatosSemilla();
-        cursoDAO.insertarDatosSemilla();
     }
+
+    public Estudiante buscarPorId(Double id) {
+        return estudianteDAO.buscarPorId(id);
+    }
+
+    public Estudiante buscarPorCodigo(Double codigo) {
+        return estudianteDAO.buscarPorCodigo(codigo);
+    }
+
 
     public List<Programa> obtenerProgramas() {
         return programaDAO.listarProgramas();
@@ -30,19 +31,13 @@ public class EstudiantesController {
     public List<Persona> obtenerEstudiantes() {
         return estudianteDAO.listar();
     }
-    public void eliminarEstudiante(Persona persona) {
-        estudianteDAO.eliminar(persona);
+    public boolean eliminarEstudiante(Double id) {
+        return estudianteDAO.eliminar(id);
+
     }
 
-    public void agregarEstudiante(String tipoPersona, String nombres, String apellidos, String email,
-                               Programa programa, Double codigo, Double promedio, Boolean activo) {
-
-        if ("Estudiante".equals(tipoPersona)) {
-            Estudiante estudiante = PersonaFactory.crearEstudiante(nombres, apellidos, email, codigo, promedio, programa, activo);
-            estudianteDAO.insertar(estudiante);
-        } else {
-            throw new IllegalArgumentException("Tipo de persona no válido");
-        }
+    public boolean agregarEstudiante(Estudiante estudiante) {
+          return  estudianteDAO.insertar(estudiante);
 
     }
 
@@ -65,7 +60,7 @@ public class EstudiantesController {
     }
 
 
-
-
-
+    public boolean eliminarEstudiantePorCodigo(Double codigo) {
+        return estudianteDAO.eliminarPorCodigo(codigo);
+    }
 }

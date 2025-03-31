@@ -16,22 +16,6 @@ public class FacultadDAO {
     }
 
 
-
-    public void insertarDatosSemilla() {
-        String sql = "INSERT INTO Facultad (ID, Nombre, DecanoID) VALUES " +
-                "(1.0, 'Facultad de Ingeniería', 1.0), " +
-                "(2.0, 'Facultad de Ciencias', 1.0), " +
-                "(3.0, 'Facultad de Humanidades', 1.0)";
-
-        try (var stmt = conexion.prepareStatement(sql)) {
-            stmt.executeUpdate();
-            System.out.println("Datos semilla insertados en Facultad.");
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
     public Facultad obtenerFacultad(Double facultadId) {
         Facultad facultad = null;
         String sql = "SELECT * FROM Facultad WHERE ID = ?";

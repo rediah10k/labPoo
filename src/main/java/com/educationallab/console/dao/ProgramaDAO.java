@@ -14,22 +14,6 @@ public class ProgramaDAO {
     }
 
 
-    public void insertarDatosSemilla() {
-        String sql = "INSERT INTO Programa (ID, Nombre, Duracion, Registro, FacultadID) VALUES " +
-                "(1, 'Ingeniería de Sistemas', 5, '2023-01-01', 1), " +
-                "(2, 'Matemáticas', 4, '2022-05-15', 2), " +
-                "(3, 'Historia', 4, '2021-08-10', 3)";
-
-        try (var stmt = conexion.prepareStatement(sql);) {
-
-            stmt.executeUpdate();
-            System.out.println("Datos semilla insertados en Programa.");
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
     public List<Programa> listarProgramas() {
         List<Programa> programas = new ArrayList<>();
         String sql = "SELECT * FROM Programa";

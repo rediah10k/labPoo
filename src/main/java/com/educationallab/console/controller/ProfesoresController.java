@@ -15,23 +15,24 @@ public class ProfesoresController {
 
     public ProfesoresController() {
         this.profesorDAO = new ProfesorDAO();
-        profesorDAO.insertarDatosSemilla();
     }
+
+    public Profesor buscarPorId(Double id) {
+        return profesorDAO.buscarPorId(id);
+    }
+
 
     public List<Persona> obtenerProfesores() {
         return profesorDAO.listar();
     }
 
-    public void eliminarProfesor(Persona persona) {
-        profesorDAO.eliminar(persona);
+    public boolean eliminarProfesor(Double id) {
+       return profesorDAO.eliminar(id);
     }
 
-    public void agregarProfesor( String nombres, String apellidos, String email,
-                               String tipoContrato) {
-
-            Profesor profesor = PersonaFactory.crearProfesor(nombres, apellidos, email, tipoContrato);
-            profesorDAO.insertar(profesor);
-        }
+    public boolean agregarProfesor( Profesor profesor) {
+           return profesorDAO.insertar(profesor);
+    }
 
 
 

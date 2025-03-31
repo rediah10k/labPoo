@@ -44,6 +44,35 @@ public class InscripcionDAO {
         return inscripciones;
     }
 
+    public List<Inscripcion> listarInscripcionesPorEstudiante(double estudianteId) {
+        List<Inscripcion> inscripciones = new ArrayList<>();
+        String sql = "SELECT * FROM Inscripcion WHERE EstudianteID = ?";
+        EstudianteDAO estudianteDAO = new EstudianteDAO();
+        CursoDAO cursoDAO = new CursoDAO();
+
+        try (var stmt = conexion.prepareStatement(sql)) {
+            stmt.setDouble(1, estudianteId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Estudiante estudiante = estudianteDAO.buscarPorId(rs.getDouble("EstudianteID"));
+                    Curso curso = cursoDAO.obtenerCursoPorId(rs.getInt("CursoID"));
+
+                    Inscripcion inscripcion = new Inscripcion(
+                            rs.getDouble("Id"),
+                            curso,
+                            rs.getInt("Año"),
+                            estudiante,
+                            rs.getInt("Semestre")
+                    );
+                    inscripciones.add(inscripcion);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return inscripciones;
+    }
+
 
     public boolean insertar(Inscripcion inscripcion) {
         String sql = "INSERT INTO Inscripcion (CursoID, EstudianteID, Semestre, Año) VALUES (?, ?, ?, ?)";

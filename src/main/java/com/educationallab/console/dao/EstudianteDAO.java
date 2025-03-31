@@ -2,7 +2,6 @@ package com.educationallab.console.dao;
 
 import com.educationallab.console.model.Estudiante;
 import com.educationallab.console.model.Persona;
-import com.educationallab.console.model.Profesor;
 import com.educationallab.console.model.Programa;
 import com.educationallab.console.util.ConexionBD;
 
@@ -21,7 +20,7 @@ ProgramaDAO programaDAO = new ProgramaDAO();
     }
 
     public Estudiante buscarPorId(Double id) {
-        String sql = "SELECT * FROM persona WHERE id = ?";
+        String sql = "SELECT * FROM persona WHERE id = ? AND Tipo='Estudiante'";
         Estudiante estudiante = null;
 
         try (var ps = conexion.prepareStatement(sql)) {
@@ -50,9 +49,36 @@ ProgramaDAO programaDAO = new ProgramaDAO();
     }
 
 
+    public Estudiante buscarPorCodigo(Double codigo) {
+        String sql = "SELECT * FROM persona WHERE Codigo = ? AND Tipo='Estudiante'";
+        Estudiante estudiante = null;
 
+        try (var ps = conexion.prepareStatement(sql)) {
 
-    public void insertar(Persona persona) {
+            ps.setDouble(1, codigo);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                Programa programa=programaDAO.obtenerProgramaPorId(rs.getDouble("ProgramaID"));
+                estudiante = new Estudiante(
+                        rs.getDouble("ID"),
+                        rs.getString("Nombres"),
+                        rs.getString("Apellidos"),
+                        rs.getString("Email"),
+                        rs.getDouble("Codigo"),
+                        programa,
+                        rs.getBoolean("Activo"),
+                        rs.getDouble("Promedio")
+
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return estudiante;
+    }
+
+    public boolean insertar(Persona persona) {
 
         if (!(persona instanceof Estudiante)) {
             throw new IllegalArgumentException("El objeto no es un Profesor");
@@ -74,10 +100,12 @@ ProgramaDAO programaDAO = new ProgramaDAO();
 
             ps.executeUpdate();
             System.out.println("Estudiante insertado correctamente.");
+            return true;
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     public List<Persona> listar() {
@@ -136,20 +164,43 @@ ProgramaDAO programaDAO = new ProgramaDAO();
     }
 
 
-    public void eliminar(Persona persona) {
+    public boolean eliminar(Double id) {
         String sql = "DELETE FROM Persona WHERE id = ?";
         try (var ps = conexion.prepareStatement(sql)) {
 
-            ps.setDouble(1, persona.getId());
+            ps.setDouble(1, id);
             int filasAfectadas = ps.executeUpdate();
 
             if (filasAfectadas > 0) {
-                System.out.println("Estudiante con ID " + persona.getId() + " eliminado correctamente.");
+                System.out.println("Estudiante con ID " + id + " eliminado correctamente.");
+                return true;
             } else {
-                System.out.println("No se encontró un estudiante con ID " + persona.getId());
+                System.out.println("No se encontró un estudiante con ID " + id);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return false;
     }
+
+    public boolean eliminarPorCodigo(Double codigo) {
+        String sql = "DELETE FROM Persona WHERE Codigo = ?";
+        try (var ps = conexion.prepareStatement(sql)) {
+
+            ps.setDouble(1, codigo);
+            int filasAfectadas = ps.executeUpdate();
+
+            if (filasAfectadas > 0) {
+                System.out.println("Estudiante con ID " + codigo + " eliminado correctamente.");
+                return true;
+            } else {
+                System.out.println("No se encontró un estudiante con ID " + codigo);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
 }

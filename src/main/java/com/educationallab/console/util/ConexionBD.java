@@ -47,6 +47,8 @@ public class ConexionBD {
         return conexion;
     }
 
+
+
     public void cerrarConexion() {
         try {
             if (conexion != null) {
@@ -132,9 +134,22 @@ public class ConexionBD {
                     FOREIGN KEY (CursoID) REFERENCES Curso(ID) ON DELETE CASCADE,
                     FOREIGN KEY (EstudianteID) REFERENCES Persona(ID) ON DELETE CASCADE
                 );
-                
-               
+            INSERT INTO Persona ( Nombres, Apellidos, Email,Tipo, TipoContrato) VALUES 
+            ('Juan', 'Pérez', 'juan.perez@universidad.edu','Profesor', 'Titular');
+            INSERT INTO Facultad ( Nombre, DecanoID) VALUES 
+            ('Facultad de Ingeniería', 1.0), 
+            ('Facultad de Ciencias', 1.0),
+            ('Facultad de Humanidades', 1.0);       
+            INSERT INTO Programa (Nombre, Duracion, Registro, FacultadID) VALUES 
+           ( 'Ingeniería de Sistemas', 5, '2023-01-01', 1), 
+           ('Matemáticas', 4, '2022-05-15', 2),  
+           ('Historia', 4, '2021-08-10', 3);
+           INSERT INTO Curso ( Nombre, ProgramaID, Activo) VALUES
+           ('Matemáticas Básicas', 2, true),
+           ('Estructuras de Datos', 1, true),
+           ( 'Historia Contemporánea', 3, true)
             """;
+
             stmt.executeUpdate(sql);
             System.out.println("Base de datos inicializada correctamente.");
         } catch (SQLException e) {

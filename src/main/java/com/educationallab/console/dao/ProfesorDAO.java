@@ -17,7 +17,7 @@ public class ProfesorDAO extends PersonaDAO {
 
 
     public Profesor buscarPorId(Double id) {
-        String sql = "SELECT * FROM Persona WHERE id = ?";
+        String sql = "SELECT * FROM Persona WHERE id = ? AND Tipo='Profesor'";
         Profesor profesor = null;
 
         try (var ps = conexion.prepareStatement(sql)) {
@@ -43,23 +43,9 @@ public class ProfesorDAO extends PersonaDAO {
     }
 
 
-    public void insertarDatosSemilla() {
-        String sql = "INSERT INTO Persona ( Nombres, Apellidos, Email,Tipo, TipoContrato) VALUES " +
-                "('Juan', 'Pérez', 'juan.perez@universidad.edu','Profesor', 'Titular')";
-
-        try (var stmt = conexion.prepareStatement(sql);) {
-
-            stmt.executeUpdate();
-            System.out.println("Datos semilla insertados en Persona (Decano).");
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
 
-
-    public void insertar(Persona persona) {
+    public boolean insertar(Persona persona) {
 
         if (!(persona instanceof Profesor)) {
             throw new IllegalArgumentException("El objeto no es un Profesor");
@@ -78,10 +64,12 @@ public class ProfesorDAO extends PersonaDAO {
 
             ps.executeUpdate();
             System.out.println("Profesor insertado correctamente.");
+            return true;
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     public List<Persona> listar() {
@@ -134,21 +122,23 @@ public class ProfesorDAO extends PersonaDAO {
     }
 
 
-    public void eliminar(Persona persona) {
+    public boolean eliminar(Double id) {
         String sql = "DELETE FROM Persona WHERE id = ?";
 
         try (var ps = conexion.prepareStatement(sql);) {
 
-            ps.setDouble(1, persona.getId());
+            ps.setDouble(1, id);
             int filasAfectadas = ps.executeUpdate();
 
             if (filasAfectadas > 0) {
-                System.out.println("Profesor con ID " + persona.getId() + " eliminado correctamente.");
+                System.out.println("Profesor con ID " + id + " eliminado correctamente.");
+                return true;
             } else {
-                System.out.println("No se encontró un profesor con ID " + persona.getId());
+                System.out.println("No se encontró un profesor con ID " + id);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return false;
     }
 }
